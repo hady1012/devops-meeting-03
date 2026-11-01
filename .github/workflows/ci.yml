@@ -1,0 +1,22 @@
+name: Python CI
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install project dependencies
+        run: python -m pip install -r requirements.txt -r requirements-dev.txt
+      - name: Compile source (Build check)
+        run: python -m compileall -q app.py
+      - name: Run automated tests
+        run: python -m pytest -q
